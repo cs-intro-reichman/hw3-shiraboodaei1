@@ -32,6 +32,8 @@ public class LoanCalc {
 		for (int i = 0; i < n; i ++){
 			leftPrice = (leftPrice - payment) * (1 + (rate)/100);
 
+		} if (leftPrice <= 0){
+			return 0.0;
 		}
 		return leftPrice;
 	}
@@ -59,14 +61,16 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
     public static double bisectionSolver(double loan, double rate, int n, double epsilon) {  
 		double lo = loan/ (double) n;
-		double hi = loan*2; 
-		double g = (lo+hi)/2; 
+		double hi = loan; 
+		double g = (lo+hi)/2.0; 
 		iterationCounter = 0;
 		while ((hi - lo) > epsilon){
 			if ((endBalance(loan, rate, n, g) * endBalance(loan, rate, n, lo)) > 0){
 				lo = g;
-			} hi = g;
-			g = (lo+hi)/2;
+			} else {
+				hi = g;
+			}
+			g = (lo+hi)/2.0;
 			iterationCounter ++;
 		}
 		return g;
